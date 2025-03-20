@@ -1,0 +1,122 @@
+ScreenManager:
+    SplashScreen:
+    HomeScreen:
+    CameraScreen:
+    UploadScreen:
+    FertilizerInputScreen:
+    ResultScreen:
+
+<SplashScreen>:
+    on_enter: root.schedule_switch()
+
+    Image:
+        source: "assets/logo/splashscreen.png"
+        size_hint: (1, 1)
+        allow_stretch: True
+
+<HomeScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        Button:
+            text: "Use Camera"
+            on_release: app.root.current = "camera"
+        Button:
+            text: "Upload Image"
+            on_release: app.root.current = "upload"
+
+<CameraScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        Camera:
+            id: camera
+            resolution: (640, 480)
+            play: True
+        Button:
+            text: "Capture Image"
+            on_release: root.capture_image()
+
+<UploadScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        FileChooserIconView:
+            id: filechooser
+        Button:
+            text: "Upload Image"
+            on_release: root.load_image(filechooser.selection)
+
+<FertilizerInputScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        ScrollView:
+            BoxLayout:
+                id: elements_box
+                orientation: 'vertical'
+                size_hint_y: None
+                height: self.minimum_height
+
+        Label:
+            id: disease_label 
+            text: "Disease: "
+            size_hint_y: None
+            height: "40dp"
+        
+        GridLayout:
+            cols: 2
+            spacing: dp(10)
+            Label:
+                text: 'Nitrogen (N):'
+            TextInput:
+                id: nitrogen_input
+                hint_text: 'Enter Nitrogen value'
+                input_filter: 'float'
+            Label:
+                text: 'Phosphorus (P):'
+            TextInput:
+                id: phosphorus_input
+                hint_text: 'Enter Phosphorus value'
+                input_filter: 'float'
+            Label:
+                text: 'Potassium (K):'
+            TextInput:
+                id: potassium_input
+                hint_text: 'Enter Potassium value'
+                input_filter: 'float'
+
+        Button:
+            text: 'Add Element'
+            size_hint_y: None
+            height: dp(40)
+            on_release: root.add_element()
+
+        Button:
+            text: 'Submit'
+            size_hint_y: None
+            height: dp(40)
+            on_release: root.submit_fertilizer_data()
+
+<ResultScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        Image:
+            id: result_image
+        Label:
+            id: disease_label
+        Label:
+            id: result_label
+        Label:
+            id: fertilizer_label
+            text: 'Fertilizer Recommendation'
+            font_size: '20sp'
+            size_hint_y: None
+            height: dp(30)
+        Label:
+            id: category_label
+        Label:
+            id: remarks_label
+        Label:
+            id: bis_label
+    Button:
+        text: "Home"
+        size_hint_y: None
+        height: 50
+        on_release: app.root.current = "home" 
